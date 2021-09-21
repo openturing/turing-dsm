@@ -111,26 +111,19 @@ public class TurDSMTest {
 		List<TurSNPaginationItem> pages = turSNPagination.getAllPages();
 		if (pages.size() > 1) 
 		{
+			
 			for (TurSNPaginationItem page : pages)
 			{
-				
-				if (page.getType().equals(TurSNPaginationType.FIRST))
-					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " FIRST " + "</a>");
-				else if (page.getType().equals(TurSNPaginationType.LAST))
-					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " LAST " + "</a>");
-				else if (page.getType().equals(TurSNPaginationType.PREVIOUS))
-					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " PREVIOUS " + "</a>");
-				else if (page.getType().equals(TurSNPaginationType.NEXT))
-					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " NEXT " + "</a>");
-				else if (page.getType().equals(TurSNPaginationType.CURRENT))
-					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " NEXT " + "</a>");
+				String linkLabel = page.getType().equals(TurSNPaginationType.PAGE)? Integer.toString(page.getPageNumber()): page.getLabel();
+				if (page.getType().equals(TurSNPaginationType.PAGE))
+					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + page.getType().equals(TurSNPaginationType.PAGE)? page.getPageNumber(): page.getLabel() + "</a>");
 				else
-					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + page.getPageNumber() + "</a>");
+					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + page.getLabel() + "</a>");
 			}
 		}
 		else
 		{
-			System.out.println("<BR> S� tem 1 p�gina");
+			System.out.println("Only 1 page");
 		}
 
 
