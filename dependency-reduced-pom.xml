@@ -24,7 +24,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.4</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -57,7 +56,7 @@
     <dependency>
       <groupId>com.github.openturing</groupId>
       <artifactId>turing-java-sdk</artifactId>
-      <version>ac76acffad</version>
+      <version>33b423dbaa</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

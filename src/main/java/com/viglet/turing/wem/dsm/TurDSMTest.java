@@ -1,18 +1,24 @@
 package com.viglet.turing.wem.dsm;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.viglet.turing.client.sn.HttpTurSNServer;
 import com.viglet.turing.client.sn.TurSNDocumentList;
 import com.viglet.turing.client.sn.TurSNQuery;
+import com.viglet.turing.client.sn.TurSNServer;
 import com.viglet.turing.client.sn.facet.TurSNFacetFieldList;
 import com.viglet.turing.client.sn.pagination.TurSNPagination;
 import com.viglet.turing.client.sn.pagination.TurSNPaginationItem;
+import com.viglet.turing.client.sn.pagination.TurSNPaginationType;
 import com.viglet.turing.client.sn.response.QueryTurSNResponse;
 
 public class TurDSMTest {
-
+	private static Logger logger = Logger.getLogger(TurSNServer.class.getName());
 	public TurDSMTest() {
 		// TODO Auto-generated constructor stub
 	}
@@ -24,7 +30,12 @@ public class TurDSMTest {
 		System.out.println(sdf.format(new Date()));
 		 */
 
-		HttpTurSNServer turSNServer = new HttpTurSNServer("http://10.90.121.109/api/sn/Sample");
+		HttpTurSNServer turSNServer = null;
+		try {
+			turSNServer = new HttpTurSNServer(new URL("http://10.90.121.109"), "Sample", "default");
+		} catch (MalformedURLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
 		TurSNQuery query = new TurSNQuery();
 		ArrayList<String> facets = new ArrayList<>();
 		
@@ -102,13 +113,16 @@ public class TurDSMTest {
 		{
 			for (TurSNPaginationItem page : pages)
 			{
-				if (page.getLabel().equals("FIRST"))
+				
+				if (page.getType().equals(TurSNPaginationType.FIRST))
 					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " FIRST " + "</a>");
-				else if (page.getLabel().equals("LAST"))
+				else if (page.getType().equals(TurSNPaginationType.LAST))
 					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " LAST " + "</a>");
-				else if (page.getLabel().equals("PREVIOUS"))
+				else if (page.getType().equals(TurSNPaginationType.PREVIOUS))
 					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " PREVIOUS " + "</a>");
-				else if (page.getLabel().equals("NEXT"))
+				else if (page.getType().equals(TurSNPaginationType.NEXT))
+					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " NEXT " + "</a>");
+				else if (page.getType().equals(TurSNPaginationType.CURRENT))
 					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + " NEXT " + "</a>");
 				else
 					System.out.println("<a href=\"" + "?text1=" + "*" + "&page1=" + page.getPageNumber() + "\">" + page.getPageNumber() + "</a>");
