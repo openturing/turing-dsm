@@ -36,9 +36,6 @@ extends TuringSearchComponent
 {
 	private static final long serialVersionUID = 1L;
 	private Integer resultsPerPage = TemplatingConstants.DEFAULT_RESULTS_PER_PAGE;
-	
-	
-	//private static int maxNoOfResults = 0;
 	private static ContextLogger LOG = LoggingManager.getContextLogger(TuringSearchResultsComponent.class);
 	private TurSNPagination turSNPagination;
 	private TurSNFacetFieldList turSNFacetFieldList;
@@ -48,7 +45,6 @@ extends TuringSearchComponent
 
 	public long getTTL() throws ApplicationException
 	{
-		LOG.debug("TuringSearchResultsComponent - getTTL = " + super.getTTL());
 		return super.getTTL();
 	}
 
@@ -100,18 +96,6 @@ extends TuringSearchComponent
 		return facetAttrName;
 	}
 	
-//	@ContentBeanMethod
-//	public int getMaxNoOfResults()
-//			throws ApplicationException
-//	{
-//		if (getAttributeValue(ATTRIBUTE_MAX_RESULTS) != null) {
-//			maxNoOfResults = ((Integer)getAttributeValue(ATTRIBUTE_MAX_RESULTS)).intValue();
-//		} else {
-//			maxNoOfResults = 0;
-//		}
-//		return maxNoOfResults;
-//	}
-
 	@ContentBeanMethod
 	public Integer getResultsPerPage()
 			throws ApplicationException
@@ -160,11 +144,6 @@ extends TuringSearchComponent
 		return endPoint;
 	}
 	
-	public List getPageNumberList()
-	{
-		return turSNPagination.getPageNumberList();
-	}
-	
 	public List<TurSNPaginationItem> getAllPages()
 	{
 		return turSNPagination.getAllPages();
@@ -172,7 +151,6 @@ extends TuringSearchComponent
 
 	public List<TurSNFacetField> getFacetFields()
 	{
-		
 		return turSNFacetFieldList.getFields();
 	}
 	
@@ -188,7 +166,8 @@ extends TuringSearchComponent
 	{
 		ArrayList<String> retorno = new ArrayList<String>();
 		String facetParams = getFacet(rc);
-		LOG.error("TuringSearchResultsComponent getFieldQueries " + facetParams);
+		if (LOG.isDebugEnabled())
+			LOG.debug("TuringSearchResultsComponent getFieldQueries " + facetParams);
 		getFacetCollection(facetParams).forEach(facetField -> {
 			retorno.add(facetField);
 		});
@@ -226,9 +205,8 @@ extends TuringSearchComponent
 		TurSNDocumentList turSNResults = response.getResults();
 		setTurSNPagination(response.getPagination());
 		setTurSNFacetFieldList(response.getFacetFields());
-
-		LOG.error("TuringSearchResultsComponent - getResults " + turSNResults.getTurSNDocuments().size());
-		
+		if (LOG.isDebugEnabled())
+			LOG.debug("TuringSearchResultsComponent - getResults " + getKeyword(rc) + " - " + turSNResults.getTurSNDocuments().size());
 		return turSNResults.getTurSNDocuments();
 	}
 
@@ -246,7 +224,8 @@ extends TuringSearchComponent
 	    	cacheKey = cacheKey + "|" + pageAttrName + "=" + page;
 	    if(null != facet && !facet.equals(""))
 	    	cacheKey = cacheKey + "|" + facetAttrName + "=" + facet;
-		LOG.debug("TuringSearchResultsComponent - createCacheKey " + cacheKey );
+	    if (LOG.isDebugEnabled())
+	    	LOG.debug("TuringSearchResultsComponent - createCacheKey " + cacheKey );
 		return cacheKey;
 	}
 

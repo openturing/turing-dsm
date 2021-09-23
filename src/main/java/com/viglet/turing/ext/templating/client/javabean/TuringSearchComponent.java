@@ -12,8 +12,8 @@ public abstract class TuringSearchComponent
 extends com.vignette.ext.templating.client.javabean.ContentComponent
 {
 
-	public static String ATTRIBUTE_MAX_RESULTS = "vgnExtTemplatingComponentMaxResults";
-	public static String ATTRIBUTE_RESULTS_PER_PAGE = "vgnExtTemplatingComponentResultsPerPage";
+	public static String ATTRIBUTE_MAX_RESULTS = "ResultsPerPage";
+	public static String ATTRIBUTE_RESULTS_PER_PAGE = "ResultsPerPage";
 	public static String ATTRIBUTE_ENDPOINT = "Endpoint";
 	public static String ATTRIBUTE_KEYWORD = "keywordAttr";
 	public static String ATTRIBUTE_PAGE = "pageAttr";
