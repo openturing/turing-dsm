@@ -1,4 +1,4 @@
-# Turing AI Components Components for OpenText Dynamic Portal and Site
+# Turing AI Components for OpenText Dynamic Portal and Site
 OpenText Dynamic Portal and Site Search Components for Turing AI Semantic Navigation.
 ```shell
 mvnw package
