@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>com.github.alegauss</groupId>
 			<artifactId>dummy-vgn</artifactId>
-			<version>1766bd388f</version>
+			<version>7f39b1301b</version>
 		</dependency>
 	</dependencies>
 
