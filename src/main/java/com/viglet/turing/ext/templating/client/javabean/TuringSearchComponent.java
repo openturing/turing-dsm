@@ -79,4 +79,8 @@ extends com.vignette.ext.templating.client.javabean.ContentComponent
 		}
 		return ttl;
 	}
+
+	public String getAttributeValue() {
+		return null;
+	}
 }
