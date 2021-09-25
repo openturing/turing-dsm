@@ -22,11 +22,8 @@ import com.viglet.turing.client.sn.pagination.TurSNPaginationItem;
 import com.viglet.turing.client.sn.response.QueryTurSNResponse;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
@@ -36,7 +33,7 @@ extends TuringSearchComponent
 {
 	private static final long serialVersionUID = 1L;
 	private Integer resultsPerPage = TemplatingConstants.DEFAULT_RESULTS_PER_PAGE;
-	private static ContextLogger LOG = LoggingManager.getContextLogger(TuringSearchResultsComponent.class);
+	private static ContextLogger logger = LoggingManager.getContextLogger(TuringSearchResultsComponent.class);
 	private TurSNPagination turSNPagination;
 	private TurSNFacetFieldList turSNFacetFieldList;
 	private String keywordAttrName = null;
@@ -58,7 +55,7 @@ extends TuringSearchComponent
 				if (null == keywordAttrName)
 					keywordAttrName = DEFAULT_ATTRIBUTE_KEYWORD;
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 		return keywordAttrName;
@@ -74,7 +71,7 @@ extends TuringSearchComponent
 				if (null == pageAttrName)
 					pageAttrName = DEFAULT_ATTRIBUTE_PAGE;
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 		return pageAttrName;
@@ -90,7 +87,7 @@ extends TuringSearchComponent
 				if (null == facetAttrName)
 					facetAttrName = DEFAULT_ATTRIBUTE_FACET;
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 		return facetAttrName;
@@ -166,8 +163,8 @@ extends TuringSearchComponent
 	{
 		ArrayList<String> retorno = new ArrayList<String>();
 		String facetParams = getFacet(rc);
-		if (LOG.isDebugEnabled())
-			LOG.debug("TuringSearchResultsComponent getFieldQueries " + facetParams);
+		if (logger.isDebugEnabled())
+			logger.debug("TuringSearchResultsComponent getFieldQueries " + facetParams);
 		getFacetCollection(facetParams).forEach(facetField -> {
 			retorno.add(facetField);
 		});
@@ -205,8 +202,8 @@ extends TuringSearchComponent
 		TurSNDocumentList turSNResults = response.getResults();
 		setTurSNPagination(response.getPagination());
 		setTurSNFacetFieldList(response.getFacetFields());
-		if (LOG.isDebugEnabled())
-			LOG.debug("TuringSearchResultsComponent - getResults " + getKeyword(rc) + " - " + turSNResults.getTurSNDocuments().size());
+		if (logger.isDebugEnabled())
+			logger.debug("TuringSearchResultsComponent - getResults " + getKeyword(rc) + " - " + turSNResults.getTurSNDocuments().size());
 		return turSNResults.getTurSNDocuments();
 	}
 
@@ -224,8 +221,8 @@ extends TuringSearchComponent
 	    	cacheKey = cacheKey + "|" + pageAttrName + "=" + page;
 	    if(null != facet && !facet.equals(""))
 	    	cacheKey = cacheKey + "|" + facetAttrName + "=" + facet;
-	    if (LOG.isDebugEnabled())
-	    	LOG.debug("TuringSearchResultsComponent - createCacheKey " + cacheKey );
+	    if (logger.isDebugEnabled())
+	    	logger.debug("TuringSearchResultsComponent - createCacheKey " + cacheKey );
 		return cacheKey;
 	}
 
@@ -243,12 +240,12 @@ extends TuringSearchComponent
 	public String getFacetsQueryStringValue(List<String> facetsList)
 	{
 		String separator = "";
-		String retorno = "";
+		StringBuilder retorno = new StringBuilder();
 		for (String facet : facetsList)
 		{
-			retorno += separator + facet;
+			retorno.append(separator + facet);
 			separator = "!";
 		}
-		return retorno;
+		return retorno.toString();
 	}
 }
