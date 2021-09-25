@@ -80,7 +80,7 @@ extends com.vignette.ext.templating.client.javabean.ContentComponent
 		return ttl;
 	}
 
-	public String getAttributeValue() {
+	public Object getAttributeValue(String attrib) {
 		return null;
 	}
 }
