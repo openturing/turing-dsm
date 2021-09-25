@@ -32,6 +32,7 @@ extends com.vignette.ext.templating.client.javabean.ContentComponent
 
 	private static ContextLogger logger = LoggingManager.getContextLogger(TuringSearchComponent.class);
 
+	@Override
 	public void handlePreCreate(AsPrePersistenceEvent event)
 			throws ApplicationException, AuthorizationException, ValidationException
 	{
@@ -43,7 +44,8 @@ extends com.vignette.ext.templating.client.javabean.ContentComponent
 			logger.trace("Exit method handlePreCreate() with event : " + event);
 		}
 	}
-
+	
+	@Override
 	public void handlePreUpdate(AsPrePersistenceEvent event)
 			throws ApplicationException, AuthorizationException, ValidationException
 	{
@@ -56,6 +58,7 @@ extends com.vignette.ext.templating.client.javabean.ContentComponent
 		}
 	}
 
+	@Override
 	public String toXML(RequestContext requestContext)
 			throws ApplicationException
 	{
@@ -69,6 +72,7 @@ extends com.vignette.ext.templating.client.javabean.ContentComponent
 		return xml;
 	}
 
+	@Override
 	public long getComponentDefaultTTL()
 	{
 		if (logger.isTraceEnabled()) {
