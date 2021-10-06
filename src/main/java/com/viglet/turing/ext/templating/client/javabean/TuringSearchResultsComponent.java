@@ -35,12 +35,44 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 	private String keywordAttrName = null;
 	private String pageAttrName = null;
 	private String facetAttrName = null;
+	private String allowedQSAttrs = null;
 
 	@Override
 	public long getTTL() throws ApplicationException {
 		return super.getTTL();
 	}
 
+	public String getAllowedQSAttrs(RequestContext rc) {
+		if (null == allowedQSAttrs) {
+			try {
+				allowedQSAttrs = "";
+				String separator = "";
+				String allowedQSAttrsValue = (String) getAttributeValue(ATTRIBUTE_ALLOWED_QS_ATTRS);
+				logger.error("TuringSearchResultsComponent - getAllowedQSAttrs " + allowedQSAttrsValue);
+				if (null != allowedQSAttrsValue)
+				{
+					StringTokenizer st = new StringTokenizer(allowedQSAttrsValue,",");
+					while(st.hasMoreElements())
+					{
+						String attrName = st.nextToken();
+						String attrValue = rc.getParameter(attrName);
+						if (null != attrValue)
+						{
+							allowedQSAttrs += separator + attrName + "=" + attrValue;
+							separator = "&";
+						}
+					}
+				}
+			} catch (ApplicationException e) {
+				logger.error(e.getMessage(), e);
+			}
+		}
+		logger.error("TuringSearchResultsComponent - getAllowedQSAttrs " + allowedQSAttrs);
+		return allowedQSAttrs;
+	}
+	
+	
+	
 	@ContentBeanMethod
 	public String getKeywordAttrName() {
 		if (null == keywordAttrName) {
@@ -181,6 +213,9 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 		return turSNResults.getTurSNDocuments();
 	}
 
+	
+
+	
 	@Override
 	public String createCacheKey(RenderedManagedObjectCacheKey key) throws ApplicationException {
 		String cacheKey = super.createCacheKey(key);
@@ -194,8 +229,10 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 			cacheKey = cacheKey + "|" + pageAttrName + "=" + page;
 		if (null != facet && !facet.equals(""))
 			cacheKey = cacheKey + "|" + facetAttrName + "=" + facet;
+		cacheKey += "|" + getAllowedQSAttrs(rc);
 		if (logger.isDebugEnabled())
 			logger.debug("TuringSearchResultsComponent - createCacheKey " + cacheKey);
+		logger.error("TuringSearchResultsComponent - createCacheKey " + cacheKey);
 		return cacheKey;
 	}
 
@@ -205,6 +242,8 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 		retorno += "&" + getPageAttrName() + "=" + params.get(TUR_ATTR_PAGE).get(0);
 		if (null != params.get(TUR_ATTR_FACET))
 			retorno += "&" + getFacetAttrName() + "=" + getFacetsQueryStringValue(params.get(TUR_ATTR_FACET));
+		retorno += "&" + getAllowedQSAttrs(rc);
+		logger.error("getQueryString : " + retorno);
 		return retorno;
 	}
 

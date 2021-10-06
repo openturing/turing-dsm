@@ -19,6 +19,7 @@ extends com.vignette.ext.templating.client.javabean.ContentComponent
 	public static final String ATTRIBUTE_KEYWORD = "keywordAttr";
 	public static final String ATTRIBUTE_PAGE = "pageAttr";
 	public static final String ATTRIBUTE_FACET = "facetAttr";
+	public static final String ATTRIBUTE_ALLOWED_QS_ATTRS = "AllowedQSAttrs";
 	public static final String DEFAULT_ATTRIBUTE_KEYWORD = "text";
 	public static final String DEFAULT_ATTRIBUTE_PAGE = "page";
 	public static final String DEFAULT_ATTRIBUTE_FACET = "facet";
