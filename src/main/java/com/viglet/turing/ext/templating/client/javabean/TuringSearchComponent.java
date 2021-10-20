@@ -16,6 +16,7 @@ extends com.vignette.ext.templating.client.javabean.ContentComponent
 	public static final String ATTRIBUTE_MAX_RESULTS = "ResultsPerPage";
 	public static final String ATTRIBUTE_RESULTS_PER_PAGE = "ResultsPerPage";
 	public static final String ATTRIBUTE_ENDPOINT = "Endpoint";
+	public static final String ATTRIBUTE_AC_ENDPOINT = "AutoCompleteEndpoint";
 	public static final String ATTRIBUTE_KEYWORD = "keywordAttr";
 	public static final String ATTRIBUTE_PAGE = "pageAttr";
 	public static final String ATTRIBUTE_FACET = "facetAttr";
