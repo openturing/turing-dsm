@@ -1,6 +1,6 @@
 package com.viglet.turing.ext.templating.turing;
 
-import com.vignette.ext.templating.util.TemplatingUtil;
+import com.viglet.turing.ext.templating.turing.util.TemplatingUtil;
 
 public class TuringSearchFacet {
 	private String link;

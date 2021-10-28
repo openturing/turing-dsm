@@ -1,8 +1,8 @@
 package com.viglet.turing.ext.templating.turing;
 
-import com.vignette.ext.templating.util.TemplatingUtil;
+import com.viglet.turing.ext.templating.turing.util.TemplatingUtil;
 
-	public class TuringSearchResult {
+public class TuringSearchResult {
 	  private String keyWord;
 	  private String summary;
 	  private String link;

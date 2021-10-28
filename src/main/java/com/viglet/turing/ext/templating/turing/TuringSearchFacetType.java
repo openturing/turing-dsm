@@ -2,7 +2,8 @@ package com.viglet.turing.ext.templating.turing;
 
 import java.util.List;
 
-import com.vignette.ext.templating.util.TemplatingUtil;
+import com.viglet.turing.ext.templating.turing.util.TemplatingUtil;
+
 
 public class TuringSearchFacetType {
 	private String name;
