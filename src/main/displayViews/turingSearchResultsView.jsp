@@ -39,7 +39,7 @@ if (mo instanceof TuringSearchResultsComponent)
 {
 	
 	TuringSearchResultsComponent turComponent = (TuringSearchResultsComponent) mo;
-	List<TurSNDocument> itens = turComponent.getResults(rc);
+	List<TurSNDocument> itens = turComponent.getTuringResults(rc);
 
 
 %>
@@ -62,7 +62,7 @@ Itens = <%= itens.size() %>
 		String pageAttrName = turComponent.getPageAttrName();
 		String keywordAttrName = turComponent.getKeywordAttrName();
 		String keyword = request.getParameter(keywordAttrName);
-		List<TurSNPaginationItem> pages = turComponent.getAllPages();
+		List<TurSNPaginationItem> pages = turComponent.getAllTuringPages();
 		
 		if (pages.size() > 1) 
 		{
