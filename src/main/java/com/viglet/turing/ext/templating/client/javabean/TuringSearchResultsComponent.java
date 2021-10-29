@@ -25,6 +25,7 @@ import com.viglet.turing.ext.templating.turing.TuringSearchFacetType;
 import com.viglet.turing.ext.templating.turing.TuringSearchPage;
 import com.viglet.turing.ext.templating.turing.TuringSearchResult;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,8 +44,6 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 	private String facetAttrName = null;
 	private String allowedQSAttrs = null;
 
-
-
 	@Override
 	public long getTTL() throws ApplicationException {
 		return super.getTTL();
@@ -56,7 +55,7 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 				allowedQSAttrs = "";
 				String separator = "";
 				String allowedQSAttrsValue = (String) getAttributeValue(ATTRIBUTE_ALLOWED_QS_ATTRS);
-				logger.error("TuringSearchResultsComponent - getAllowedQSAttrs " + allowedQSAttrsValue);
+				logger.debug("TuringSearchResultsComponent - getAllowedQSAttrs " + allowedQSAttrsValue);
 				if (null != allowedQSAttrsValue)
 				{
 					StringTokenizer st = new StringTokenizer(allowedQSAttrsValue,",");
@@ -75,7 +74,7 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 				logger.error(e.getMessage(), e);
 			}
 		}
-		logger.error("TuringSearchResultsComponent - getAllowedQSAttrs " + allowedQSAttrs);
+		logger.debug("TuringSearchResultsComponent - getAllowedQSAttrs " + allowedQSAttrs);
 		return allowedQSAttrs;
 	}
 
@@ -171,7 +170,7 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 	@ContentBeanMethod
 	public List<TuringSearchPage> getAllPages(RequestContext rc) 
 	{
-		logger.error("TuringSearchResultsComponent - getAllPages " );
+		logger.debug("TuringSearchResultsComponent - getAllPages " );
 		List<TurSNPaginationItem> turingPages = turSNPagination.getAllPages();
 		ArrayList<TuringSearchPage> retorno = new ArrayList<TuringSearchPage>();
 		for(TurSNPaginationItem doc : turingPages)
@@ -184,7 +183,7 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 			retorno.add(tPage);
 
 		}
-		logger.error("TuringSearchResultsComponent - getAllPages retorno : " + retorno.size() );
+		logger.debug("TuringSearchResultsComponent - getAllPages retorno : " + retorno.size() );
 		return retorno;
 	}
 
@@ -195,7 +194,7 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 	@ContentBeanMethod
 	public List<TuringSearchFacetType> getFacets(RequestContext rc) 
 	{
-		logger.error("TuringSearchResultsComponent - getFacets " );
+		logger.debug("TuringSearchResultsComponent - getFacets " );
 		List<TurSNFacetField> turingFacetTypes = turSNFacetFieldList.getFields();
 		ArrayList<TuringSearchFacetType> retorno = new ArrayList<TuringSearchFacetType>();
 		for(TurSNFacetField item : turingFacetTypes)
@@ -217,30 +216,39 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 			retorno.add(facetType);
 
 		}
-		logger.error("TuringSearchResultsComponent - getFacets retorno : " + retorno.size() );
+		logger.debug("TuringSearchResultsComponent - getFacets retorno : " + retorno.size() );
 		return retorno;
 	}
 
 	@ContentBeanMethod
 	public List<TuringSearchFacet> getAppliedFacets(RequestContext rc) 
 	{
-		logger.error("TuringSearchResultsComponent - getAppliedFacets " );
-		TurSNFacetField item = getAppliedFacetFields();
-		TuringSearchFacetType facetType = new TuringSearchFacetType();
-		facetType.setName(item.getLabel());
-		facetType.setApplied(true);
+		logger.debug("TuringSearchResultsComponent - getAppliedFacets " );
 		ArrayList<TuringSearchFacet> facets = new ArrayList<TuringSearchFacet>();
-		List<TurSNFacetFieldValue> values = item.getValues().getTurSNFacetFieldValues();
-		for (TurSNFacetFieldValue value : values)
+		TurSNFacetField item = getAppliedFacetFields();
+		if (null != item)
 		{
-			TuringSearchFacet facet = new TuringSearchFacet();
-			facet.setName(value.getLabel());
-			facet.setLink(getQueryString(value.getQueryParams().get(),rc));
-			facet.setCount(Integer.toString(value.getCount()));
-			facets.add(facet);
+			TuringSearchFacetType facetType = new TuringSearchFacetType();
+			facetType.setName("Applied Facets");
+			facetType.setApplied(true);
+			if (item.getValues() != null)
+			{
+				if (item.getValues().getTurSNFacetFieldValues() != null)
+				{
+					List<TurSNFacetFieldValue> values = item.getValues().getTurSNFacetFieldValues();
+					for (TurSNFacetFieldValue value : values)
+					{
+						TuringSearchFacet facet = new TuringSearchFacet();
+						facet.setName(value.getLabel());
+						facet.setLink(getQueryString(value.getQueryParams().get(),rc));
+						facet.setCount(Integer.toString(value.getCount()));
+						facets.add(facet);
+					}
+				}
+				facetType.setFacets(facets);
+			}
 		}
-		facetType.setFacets(facets);
-		logger.error("TuringSearchResultsComponent - getAppliedFacets retorno : " + facets.size() );
+		logger.debug("TuringSearchResultsComponent - getAppliedFacets retorno : " + facets.size() );
 		return facets;
 	}
 
@@ -275,9 +283,12 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 
 
 	public List<TurSNDocument> getTuringResults(RequestContext rc) throws ApplicationException, ValidationException, AuthorizationException {
+		//String siteName = rc.getCurrentSite().getName();
 		int page = Integer.parseInt(getPage(rc));
 		getFieldQueries(rc);
 		HttpTurSNServer turSNServer = new HttpTurSNServer(getEndPoint());
+		//URL url = new URL(getEndPoint());
+		//HttpTurSNServer turSNServer = new HttpTurSNServer(url, siteName);
 		TurSNQuery query = new TurSNQuery();
 		query.setQuery(getKeyword(rc));
 		query.setRows(getResultsPerPage());

@@ -72,6 +72,7 @@ Copyright 2014 OpenText Corporation All rights reserved.
 			</c:choose>
 		</c:otherwise>
 	</c:choose>
+	<br>
 	<c:set var="pages" value="${component.allPages}" />
 	<c:choose>
 		<c:when test="${not empty pages}">
@@ -89,7 +90,9 @@ Copyright 2014 OpenText Corporation All rights reserved.
 			<br><i18n:message key="searchcomponent.no.search.results"/> <b><c:out value="${searchKeyword}"/></b>
 		</c:otherwise>
 	</c:choose>
-
+	<br>
+	<br>
+	<br>
 	<c:set var="facetTypes" value="${component.facets}" />
 	<c:choose>
 		<c:when test="${not empty facetTypes}">
@@ -107,6 +110,24 @@ Copyright 2014 OpenText Corporation All rights reserved.
 					</c:forEach>
 				</ul>
 			</c:forEach>
+		</c:when>
+	</c:choose>
+	<br>
+	<br>
+	<br>
+	<c:set var="appliedFacets" value="${component.appliedFacets}" />
+	<c:choose>
+		<c:when test="${not empty appliedFacets}">
+		Applied Facets
+			<ul>
+				<c:forEach items="${appliedFacets}" var="appliedFacet">
+					<c:set var="appliedFacetName" value="${appliedFacet.name}" />
+					<c:set var="appliedFacetLinkUrl" value="${appliedFacet.link}" />
+					<li>
+						<a href="${appliedFacetLinkUrl}">${appliedFacetName}</a><br/>
+					</li>
+				</c:forEach>
+			</ul>
 		</c:when>
 	</c:choose>
 
