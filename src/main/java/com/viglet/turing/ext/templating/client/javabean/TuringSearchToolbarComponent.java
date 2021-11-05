@@ -28,7 +28,7 @@ extends TuringSearchComponent
 		return requiredRequestParameterNames;
 	}
 	
-	private String getAutoCompleteEndPoint() throws ApplicationException {
+	public String getAutoCompleteEndPoint() throws ApplicationException {
 		return (String) getAttributeValue(ATTRIBUTE_AC_ENDPOINT);
 	}
 

@@ -330,10 +330,11 @@ public class TuringSearchResultsComponent extends TuringSearchComponent {
 
 	private String getSummaryFromText(String text, int length)
 	{
-		if (text.length() > length)
+		if ((null != text) && (text.length() > length))
 			return text.substring(0, length - 3) + "...";
 		else
 			return text;
+		
 	}
 
 
